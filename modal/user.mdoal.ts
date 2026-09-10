@@ -19,7 +19,7 @@ const UserSchema = new Schema<UserDocument>(
     name: { type: String, required: true },
     loginId: { type: String, required: true, unique: true, trim: true },
     passwordHash: { type: String, required: true, select: false },
-    mobileNo: { type: String, required: true, trim: true },
+    mobileNo: { type: String, required: true, trim: true , }, // unique karna hai 
     role: {
       type: String,
       enum: ["student", "admin"],

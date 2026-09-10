@@ -8,13 +8,16 @@ if (!MONGODB_URI) {
   );
 }
 
+// ! imageine this is a array 
 let cached: { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null } = (global as any).mongoose;
 
 if (!cached) {
   cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
+//! main fucntion 
 async function dbConnect(): Promise<typeof mongoose> {
+
   if (cached.conn) {
     console.log('Using cached MongoDB connection');
     return cached.conn;
@@ -31,6 +34,7 @@ async function dbConnect(): Promise<typeof mongoose> {
       return mongoose;
     });
   }
+
   cached.conn = await cached.promise;
   return cached.conn;
 }
