@@ -3,6 +3,7 @@ import mongoose, { Schema } from "mongoose";
 export interface VenueDocument {
 	_id: number;
 	capablity: number;
+	image: string;
 	name: string;
 	building: string;
 	isActive: boolean;
@@ -12,13 +13,13 @@ export interface VenueDocument {
 
 const VenueSchema = new Schema<VenueDocument>(
 	{
-		_id: { type: Number, required: true },
-		capablity: { type: Number, required: true, min: 1 },
-		name: { type: String, required: true, trim: true },
-		building: { type: String, required: true, trim: true },
-		isActive: { type: Boolean, default: true },
+		capablity: { type: Number, required: true, min: 1 },  // no of students that can be accomodated in the venue
+		image : { type: String, trim: true }, // image of the venue, imagekit will be used to upload the image and get the url, this url will be stored in the database
+		name: { type: String, required: true, trim: true }, // name of the venue/room
+		building: { type: String, required: true, trim: true },  // builidng in which the venue is located
+		isActive: { type: Boolean, default: true },  // is the venue active or not, if not active then it cannot be booked
 	},
-	{ timestamps: true }
+	{ timestamps: true }  // createdAt and updatedAt will be automatically added to the document
 );
 
 const VenueModel =

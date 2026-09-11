@@ -16,19 +16,20 @@ export interface UserDocument {
 
 const UserSchema = new Schema<UserDocument>(
   {
-    name: { type: String, required: true },
-    loginId: { type: String, required: true, unique: true, trim: true },
-    passwordHash: { type: String, required: true, select: false },
-    mobileNo: { type: String, required: true, trim: true , }, // unique karna hai 
-    role: {
+    name: { type: String, required: true }, // name of the user
+    loginId: { type: String, required: true, unique: true, trim: true },//login id of the user, unique and trim
+    passwordHash: { type: String, required: true, select: false }, // hashed password of the user, not selected by default
+    mobileNo: { type: String, required: true, trim: true , unique: true}, // unique karna hai 
+    role: { 
       type: String,
-      enum: ["student", "admin"],
+      enum: ["student", "admin"], // by default student, admin will be created by the system (us)
       default: "student",
     },
-    isAuthorized: { type: Boolean, default: false },
+
+    isAuthorized: { type: Boolean, default: false },  // is authorized by admin or not, if not authorized then cannot book a venue
   },
   {
-    timestamps: true,
+    timestamps: true, // createdAt and updatedAt will be automatically added to the document
   }
 );
 
