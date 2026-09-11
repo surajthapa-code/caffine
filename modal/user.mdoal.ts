@@ -3,13 +3,12 @@ import mongoose, { Schema } from "mongoose";
 export type UserRole = "student" | "admin";
 
 export interface UserDocument {
-  _id: mongoose.Types.ObjectId;
   name: string;
-  loginId: string;
-  passwordHash: string;
+  loginId: string; // we will create a unique login id for each user, this will be used to login to the system
+  password: string; // hashed password of the user, not selected by default
   mobileNo: string;
-  role: UserRole;
-  isAuthorized: boolean;
+  role: UserRole; 
+  isAuthorized: boolean; // if role !== "admin" then this need to be true, otherwise cannot book a venue
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,7 +17,7 @@ const UserSchema = new Schema<UserDocument>(
   {
     name: { type: String, required: true }, // name of the user
     loginId: { type: String, required: true, unique: true, trim: true },//login id of the user, unique and trim
-    passwordHash: { type: String, required: true, select: false }, // hashed password of the user, not selected by default
+    password: { type: String, required: true, select: false }, // hashed password of the user, not selected by default
     mobileNo: { type: String, required: true, trim: true , unique: true}, // unique karna hai 
     role: { 
       type: String,
