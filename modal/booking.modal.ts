@@ -1,20 +1,19 @@
 import mongoose, { Schema } from "mongoose";
 
 export type BookingStatus =
-	| "pending"
-	| "approved"
-	| "rejected"
-	| "cancelled"
-	| "completed";
+	| "pending" // by default 
+	| "approved" // by admin
+	| "rejected" // by admin
+	| "cancelled" // by user under 15 minutes
+	| "completed"; // after the booking is done and time is over, will be marked as completed by the system
 
 export interface BookingDocument {
-	_id: number;
-	venue_id: number;
+	venue_id: mongoose.Types.ObjectId;
 	user_id: mongoose.Types.ObjectId;
 	starting_time: string;
 	ending_time: string;
 	date: Date;
-	numberofstudent: number;
+	numberofStudents: number;
 	status: BookingStatus;
 	reason: string;
 }
@@ -22,9 +21,9 @@ export interface BookingDocument {
 const BookingSchema = new Schema<BookingDocument>(
 	{
 		venue_id: { 
-			type: Number,
-			required: true,
+			type: Schema.Types.ObjectId,
 			ref: "Venue",
+			required: true,
 		},
 		user_id: {
 			type: Schema.Types.ObjectId,
@@ -34,6 +33,9 @@ const BookingSchema = new Schema<BookingDocument>(
 		starting_time: { type: String, required: true,  enum: [ "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]},
 		ending_time: { type: String, required: true , enum: [ "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]},
 		date: { type: Date, required: true },
+		numberofStudents: { type: Number, min: 1 },
+		 // ~~~ no of students that will be attending the event, 
+		// ~~~ if numberOfStudents > venue's capacity,reject the booking 
 		status: {
 			type: String,
 			enum: ["pending", "approved", "rejected", "cancelled", "completed"], // approved by admin, rejected by admin, cancelled by user, completed after the booking is done
